@@ -1,0 +1,283 @@
+// ============================================================
+// Global Job Aggregation Platform — Prisma Schema
+// ============================================================
+// PostgreSQL with full-text search, GIN indexes, and composite
+// unique constraints for deduplication.
+// ============================================================
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+// ──────────────────────────────────────────────
+// Enums
+// ──────────────────────────────────────────────
+
+enum JobType {
+  INTERNSHIP
+  NEW_GRAD
+  FULL_TIME
+  APPRENTICESHIP
+  CONTRACT
+}
+
+enum JobStatus {
+  ACTIVE
+  EXPIRED
+  DUPLICATE
+  REMOVED
+}
+
+enum RemoteStatus {
+  REMOTE
+  HYBRID
+  ONSITE
+  UNKNOWN
+}
+
+enum ExperienceLevel {
+  INTERN
+  ENTRY
+  MID
+  SENIOR
+  STAFF
+  UNKNOWN
+}
+
+enum JobSource {
+  GREENHOUSE
+  LEVER
+  ASHBY
+  WORKDAY
+  SMARTRECRUITERS
+  YC_JOBS
+  WELLFOUND
+  REMOTEOK
+  WEWORKREMOTELY
+  MANUAL
+}
+
+enum TechCategory {
+  LANGUAGE
+  FRAMEWORK
+  CLOUD
+  DATABASE
+  INFRASTRUCTURE
+  AI_ML
+  TOOL
+  OTHER
+}
+
+enum CompanySize {
+  STARTUP
+  SMALL
+  MEDIUM
+  LARGE
+  ENTERPRISE
+  UNKNOWN
+}
+
+// ──────────────────────────────────────────────
+// Models
+// ──────────────────────────────────────────────
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  skills        String[]        @default([])
+  accounts      Account[]
+  sessions      Session[]
+  bookmarks     Bookmark[]
+  searches      SearchHistory[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Company {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  website     String?
+  logo        String?
+  description String?     @db.Text
+  industry    String?
+  size        CompanySize @default(UNKNOWN)
+  atsSlug     String?     // The slug used in ATS URLs (e.g., Greenhouse board name)
+  atsPlatform JobSource?  // Which ATS this company uses
+  tier        Int         @default(50) // Company reputation tier 0-100
+  hqCountry   String?
+  hqCity      String?
+  jobs        Job[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([name])
+  @@index([atsPlatform, atsSlug])
+  @@map("companies")
+}
+
+model Job {
+  id              String          @id @default(cuid())
+  title           String
+  titleNormalized String          // Lowercased, trimmed version for dedup
+  description     String?         @db.Text
+  company         Company         @relation(fields: [companyId], references: [id])
+  companyId       String
+  country         String?
+  city            String?
+  region          String?         // e.g., "North America", "Europe", "Asia"
+  remote          RemoteStatus    @default(UNKNOWN)
+  jobType         JobType         @default(FULL_TIME)
+  experienceLevel ExperienceLevel @default(UNKNOWN)
+  salaryMin       Int?            // Annual salary in USD
+  salaryMax       Int?
+  salaryCurrency  String?         @default("USD")
+  techStack       String[]        @default([]) // Detected technologies
+  visaSponsorship Boolean?
+  applicationUrl  String          @db.Text
+  source          JobSource
+  sourceId        String?         // ID from the original source
+  status          JobStatus       @default(ACTIVE)
+  score           Int             @default(0) // Composite ranking score 0-100
+  postedAt        DateTime?
+  expiresAt       DateTime?
+  crawledAt       DateTime        @default(now())
+  bookmarks       Bookmark[]
+
+  // Full-text search vector (populated via raw SQL trigger)
+  searchVector    Unsupported("tsvector")?
+
+  @@unique([companyId, titleNormalized, city]) // Dedup constraint
+  @@unique([source, sourceId])                  // Source-level dedup
+  @@index([status, score(sort: Desc)])          // Main listing query
+  @@index([jobType])
+  @@index([country])
+  @@index([remote])
+  @@index([postedAt(sort: Desc)])
+  @@index([techStack], type: Gin)
+  @@index([searchVector], type: Gin)
+  @@map("jobs")
+}
+
+model Technology {
+  id           String       @id @default(cuid())
+  name         String       @unique
+  displayName  String
+  category     TechCategory
+  aliases      String[]     @default([]) // Alternative names for matching
+  demandScore  Int          @default(5)  // 1-10
+  salaryScore  Int          @default(5)  // 1-10
+  difficulty   Int          @default(5)  // 1-10
+  futureScore  Int          @default(5)  // 1-10
+  mobilityScore Int         @default(5)  // 1-10
+  trends       TechTrend[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("technologies")
+}
+
+model TechTrend {
+  id           String     @id @default(cuid())
+  technology   Technology @relation(fields: [technologyId], references: [id])
+  technologyId String
+  date         DateTime   @db.Date
+  jobCount     Int        @default(0)
+  avgSalary    Int?
+  growthRate   Float?     // Week-over-week growth percentage
+
+  @@unique([technologyId, date])
+  @@index([date(sort: Desc)])
+  @@map("tech_trends")
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId     String
+  notes     String?  @db.Text
+  createdAt DateTime @default(now())
+
+  @@unique([userId, jobId])
+  @@map("bookmarks")
+}
+
+model SearchHistory {
+  id        String   @id @default(cuid())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    String?
+  query     String
+  filters   Json?    // Stored as JSON for flexibility
+  results   Int      @default(0) // Number of results returned
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("search_history")
+}
+
+model CrawlLog {
+  id         String    @id @default(cuid())
+  source     JobSource
+  status     String    @default("RUNNING") // RUNNING, COMPLETED, FAILED
+  jobsFound  Int       @default(0)
+  jobsNew    Int       @default(0)
+  jobsUpdated Int      @default(0)
+  errors     String[]  @default([])
+  duration   Int?      // Duration in milliseconds
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  @@index([source, startedAt(sort: Desc)])
+  @@map("crawl_logs")
+}

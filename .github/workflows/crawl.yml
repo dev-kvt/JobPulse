@@ -1,0 +1,42 @@
+name: Scheduled Crawler Execution
+
+on:
+  schedule:
+    # Run every 6 hours (at minute 0 of hours 0, 6, 12, 18)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    # Allows manual triggering from the GitHub Actions UI
+
+jobs:
+  run-crawler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Crawler Endpoint
+        run: |
+          if [ -z "${{ secrets.APP_URL }}" ]; then
+            echo "Error: APP_URL secret is not set. Please add it to your GitHub Repository Secrets."
+            exit 1
+          fi
+          if [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "Error: CRON_SECRET secret is not set. Please add it to your GitHub Repository Secrets."
+            exit 1
+          fi
+          
+          echo "Triggering crawl cycle on ${{ secrets.APP_URL }}..."
+          
+          # Hit the secured endpoint and get HTTP status code
+          STATUS_CODE=$(curl -s -o response.json -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/cron/crawl")
+          
+          echo "HTTP Response Status Code: $STATUS_CODE"
+          echo "Response Body:"
+          cat response.json
+          
+          # Fail step if response status code is not 200
+          if [ "$STATUS_CODE" -ne 200 ]; then
+            echo "Crawler execution failed with status $STATUS_CODE"
+            exit 1
+          fi
+          
+          echo "Crawler executed successfully!"
