@@ -5,7 +5,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCached, setCache } from '@/lib/redis';
-import type { Prisma } from '@prisma/client';
+
 
 export const dynamic = 'force-dynamic';
 
@@ -34,18 +34,19 @@ export async function GET(request: NextRequest) {
     }
 
     // Build where clause
-    const where: Prisma.JobWhereInput = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: Record<string, any> = {
       status: 'ACTIVE',
     };
 
     if (type) {
       const types = type.split(',');
-      where.jobType = { in: types as Prisma.EnumJobTypeFilter['in'] };
+      where.jobType = { in: types };
     }
 
     if (remote) {
       const remotes = remote.split(',');
-      where.remote = { in: remotes as Prisma.EnumRemoteStatusFilter['in'] };
+      where.remote = { in: remotes };
     }
 
     if (country) {
@@ -71,7 +72,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Build orderBy
-    const orderBy: Prisma.JobOrderByWithRelationInput = {};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const orderBy: Record<string, any> = {};
     switch (sort) {
       case 'salary':
         orderBy.salaryMax = order === 'asc' ? 'asc' : 'desc';
