@@ -80,6 +80,16 @@ export default function JobDetailPage() {
 
   const getScoreClass = (score: number) => score >= 70 ? 'score-high' : score >= 40 ? 'score-medium' : 'score-low';
 
+  const decodeHtml = (html: string) => {
+    return html
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&amp;/g, '&')
+      .replace(/&nbsp;/g, ' ');
+  };
+
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 24px 64px' }}>
       {/* Back Button */}
@@ -167,13 +177,14 @@ export default function JobDetailPage() {
         </a>
       </div>
 
-      {/* Job Description */}
       {job.description && (
         <div className="glass-card" style={{ padding: 28, marginBottom: 24 }}>
           <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Job Description</h2>
-          <div style={{ fontSize: 14, lineHeight: 1.8, color: 'var(--foreground-secondary)', whiteSpace: 'pre-wrap' }}>
-            {job.description}
-          </div>
+          <div 
+            className="job-description"
+            style={{ fontSize: 14, lineHeight: 1.8, color: 'var(--foreground-secondary)' }}
+            dangerouslySetInnerHTML={{ __html: decodeHtml(job.description) }}
+          />
         </div>
       )}
 

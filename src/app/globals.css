@@ -332,3 +332,66 @@ a {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ── Rich Text Description ── */
+
+.job-description {
+  color: var(--foreground-secondary);
+}
+
+.job-description p {
+  margin-bottom: 1em;
+}
+
+.job-description p:last-child {
+  margin-bottom: 0;
+}
+
+.job-description h1,
+.job-description h2,
+.job-description h3,
+.job-description h4 {
+  color: var(--foreground);
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+.job-description h1 { font-size: 1.5em; }
+.job-description h2 { font-size: 1.3em; }
+.job-description h3 { font-size: 1.1em; }
+
+.job-description ul,
+.job-description ol {
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.job-description li {
+  margin-bottom: 0.5em;
+}
+
+.job-description ul {
+  list-style-type: disc;
+}
+
+.job-description ol {
+  list-style-type: decimal;
+}
+
+.job-description a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.2s;
+}
+
+.job-description a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.job-description strong,
+.job-description b {
+  font-weight: 700;
+  color: var(--foreground);
+}
