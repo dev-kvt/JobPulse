@@ -142,7 +142,7 @@ export default function HomePage() {
       <section className="hero-gradient" style={{ padding: '48px 24px 32px', textAlign: 'center' }}>
         <div style={{ maxWidth: 800, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 16 }}>
-            <Sparkles size={16} style={{ color: 'var(--accent)' }} />
+            <Sparkles size={16} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
             <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-hover)', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
               AI-Powered Job Discovery
             </span>
@@ -150,7 +150,7 @@ export default function HomePage() {
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 48px)', fontWeight: 800, lineHeight: 1.1, marginBottom: 12, letterSpacing: '-1px' }}>
             Find Your Next
             <br />
-            <span className="gradient-text">Engineering Role</span>
+            <span style={{ color: 'var(--accent)' }}>Engineering Role</span>
           </h1>
           <p style={{ fontSize: 16, color: 'var(--foreground-secondary)', maxWidth: 600, margin: '0 auto 24px', lineHeight: 1.6 }}>
             Real-time crawling from Greenhouse, Lever, Ashby, and 6 more sources.
@@ -177,6 +177,7 @@ export default function HomePage() {
           <div style={{ position: 'relative', maxWidth: 640, margin: '0 auto' }}>
             <Search
               size={18}
+              strokeWidth={1.5}
               style={{
                 position: 'absolute',
                 left: 16,
@@ -205,9 +206,9 @@ export default function HomePage() {
             onClick={() => setShowFilters(!showFilters)}
             style={{ gap: 6 }}
           >
-            <Filter size={14} />
+            <Filter size={14} strokeWidth={1.5} />
             Filters
-            <ChevronDown size={12} style={{ transform: showFilters ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+            <ChevronDown size={12} strokeWidth={1.5} style={{ transform: showFilters ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
           </button>
 
           {JOB_TYPES.map((type) => (
@@ -237,7 +238,7 @@ export default function HomePage() {
             className={`filter-chip ${visaOnly ? 'active' : ''}`}
             onClick={() => { setVisaOnly(!visaOnly); setPage(1); }}
           >
-            <Shield size={12} />
+            <Shield size={12} strokeWidth={1.5} />
             <span style={{ marginLeft: 4 }}>Visa</span>
           </button>
         </div>
@@ -296,7 +297,7 @@ export default function HomePage() {
           </div>
         ) : jobs.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '64px 24px' }}>
-            <Briefcase size={48} style={{ color: 'var(--foreground-muted)', marginBottom: 16 }} />
+            <Briefcase size={48} strokeWidth={1.5} style={{ color: 'var(--foreground-muted)', marginBottom: 16 }} />
             <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 8 }}>No jobs found</h3>
             <p style={{ color: 'var(--foreground-muted)', fontSize: 14 }}>
               Try adjusting your filters or search query. Jobs are crawled every 6 hours.
@@ -338,14 +339,14 @@ export default function HomePage() {
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', fontSize: 12, color: 'var(--foreground-muted)' }}>
                   {job.city && (
                     <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                      <MapPin size={11} /> {job.city}{job.country ? `, ${job.country}` : ''}
+                      <MapPin size={11} strokeWidth={1.5} /> {job.city}{job.country ? `, ${job.country}` : ''}
                     </span>
                   )}
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     {getRemoteIcon(job.remote)} {job.remote.charAt(0) + job.remote.slice(1).toLowerCase()}
                   </span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <Briefcase size={11} /> {getJobTypeLabel(job.jobType)}
+                    <Briefcase size={11} strokeWidth={1.5} /> {getJobTypeLabel(job.jobType)}
                   </span>
                 </div>
 
@@ -374,8 +375,8 @@ export default function HomePage() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto', paddingTop: 8, borderTop: '1px solid var(--border)' }}>
                   <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                     {job.visaSponsorship && (
-                      <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-full)', background: 'rgba(34, 197, 94, 0.1)', color: 'var(--success)', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
-                        <Shield size={10} style={{ marginRight: 3, verticalAlign: 'middle' }} />Visa
+                      <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-full)', background: 'rgba(22, 163, 74, 0.1)', color: 'var(--success)', border: '1px solid rgba(22, 163, 74, 0.2)' }}>
+                        <Shield size={10} strokeWidth={1.5} style={{ marginRight: 3, verticalAlign: 'middle' }} />Visa
                       </span>
                     )}
                     {job.postedAt && (
@@ -392,7 +393,7 @@ export default function HomePage() {
                     style={{ padding: '6px 14px', fontSize: 12 }}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    Apply <ExternalLink size={11} />
+                    Apply <ExternalLink size={11} strokeWidth={1.5} />
                   </a>
                 </div>
               </article>

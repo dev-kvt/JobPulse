@@ -21,7 +21,7 @@ export function Footer() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Globe size={16} style={{ color: 'var(--accent)' }} />
+          <Globe size={16} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
           <span style={{ fontSize: 13, color: 'var(--foreground-muted)' }}>
             JobPulse — Crawling {'>'}50 companies across 9 ATS platforms globally
           </span>
@@ -36,7 +36,7 @@ export function Footer() {
             rel="noopener noreferrer"
             style={{ color: 'var(--foreground-muted)', transition: 'color 0.2s' }}
           >
-            <Code size={18} />
+            <Code size={18} strokeWidth={1.5} />
           </a>
         </div>
       </div>

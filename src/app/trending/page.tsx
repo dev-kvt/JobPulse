@@ -34,7 +34,7 @@ export default function TrendingPage() {
     <div style={{ maxWidth: 1280, margin: '0 auto', padding: '32px 24px 64px' }}>
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>
-          <TrendingUp size={28} style={{ verticalAlign: 'middle', marginRight: 8, color: 'var(--accent)' }} />
+          <TrendingUp size={28} strokeWidth={1.5} style={{ verticalAlign: 'middle', marginRight: 8, color: 'var(--accent)' }} />
           Market Trends & Analytics
         </h1>
         <p style={{ color: 'var(--foreground-secondary)', fontSize: 15 }}>
@@ -45,7 +45,7 @@ export default function TrendingPage() {
       {/* Tech Stack Rankings */}
       <section className="glass-card" style={{ padding: 24, marginBottom: 24 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <BarChart3 size={20} style={{ color: 'var(--accent)' }} /> Technology Stack Rankings
+          <BarChart3 size={20} strokeWidth={1.5} style={{ color: 'var(--accent)' }} /> Technology Stack Rankings
         </h2>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -95,7 +95,7 @@ export default function TrendingPage() {
       {/* Career Paths */}
       <section style={{ marginBottom: 24 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Zap size={20} style={{ color: 'var(--warning)' }} /> Recommended Career Paths
+          <Zap size={20} strokeWidth={1.5} style={{ color: 'var(--warning)' }} /> Recommended Career Paths
         </h2>
         <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
           {Object.entries(paths).map(([key, path]) => (
@@ -114,7 +114,7 @@ export default function TrendingPage() {
       {/* Top Countries */}
       <section className="glass-card" style={{ padding: 24, marginBottom: 24 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Globe size={20} style={{ color: 'var(--info)' }} /> Top Countries for Software Engineers
+          <Globe size={20} strokeWidth={1.5} style={{ color: 'var(--info)' }} /> Top Countries for Software Engineers
         </h2>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -149,7 +149,7 @@ export default function TrendingPage() {
       {/* Learning Roadmap */}
       <section style={{ marginBottom: 24 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <DollarSign size={20} style={{ color: 'var(--success)' }} /> Learning Roadmap
+          <DollarSign size={20} strokeWidth={1.5} style={{ color: 'var(--success)' }} /> Learning Roadmap
         </h2>
         <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))' }}>
           {Object.entries(roadmap).map(([key, phase]) => (

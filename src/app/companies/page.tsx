@@ -52,7 +52,7 @@ export default function CompaniesPage() {
     <div style={{ maxWidth: 1280, margin: '0 auto', padding: '32px 24px 64px' }}>
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>
-          <Building2 size={28} style={{ verticalAlign: 'middle', marginRight: 8, color: 'var(--accent)' }} />
+          <Building2 size={28} strokeWidth={1.5} style={{ verticalAlign: 'middle', marginRight: 8, color: 'var(--accent)' }} />
           Companies
         </h1>
         <p style={{ color: 'var(--foreground-secondary)', fontSize: 15 }}>
@@ -62,7 +62,7 @@ export default function CompaniesPage() {
 
       {/* Search */}
       <div style={{ position: 'relative', maxWidth: 480, marginBottom: 32 }}>
-        <Search size={18} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--foreground-muted)' }} />
+        <Search size={18} strokeWidth={1.5} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--foreground-muted)' }} />
         <input
           type="text"
           className="search-input"
@@ -79,7 +79,7 @@ export default function CompaniesPage() {
         </div>
       ) : companies.length === 0 ? (
         <div style={{ textAlign: 'center', padding: 64 }}>
-          <Building2 size={48} style={{ color: 'var(--foreground-muted)', marginBottom: 16 }} />
+          <Building2 size={48} strokeWidth={1.5} style={{ color: 'var(--foreground-muted)', marginBottom: 16 }} />
           <p style={{ color: 'var(--foreground-muted)' }}>No companies found. Try a different search.</p>
         </div>
       ) : (
@@ -101,7 +101,7 @@ export default function CompaniesPage() {
               <div style={{ display: 'flex', gap: 12, fontSize: 12, color: 'var(--foreground-muted)' }}>
                 {company.hqCountry && (
                   <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <MapPin size={11} /> {company.hqCountry}
+                    <MapPin size={11} strokeWidth={1.5} /> {company.hqCountry}
                   </span>
                 )}
                 {company.size !== 'UNKNOWN' && (
@@ -115,7 +115,7 @@ export default function CompaniesPage() {
                 </span>
                 {company.website && (
                   <a href={company.website} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} style={{ color: 'var(--foreground-muted)' }}>
-                    <ExternalLink size={14} />
+                    <ExternalLink size={14} strokeWidth={1.5} />
                   </a>
                 )}
               </div>

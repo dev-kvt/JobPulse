@@ -23,9 +23,9 @@ export function Navbar() {
         top: 0,
         zIndex: 50,
         borderBottom: '1px solid var(--border)',
-        background: 'rgba(10, 10, 15, 0.85)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
+        background: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
       }}
     >
       <nav
@@ -56,16 +56,16 @@ export function Navbar() {
               width: 32,
               height: 32,
               borderRadius: 8,
-              background: 'var(--accent-gradient)',
+              background: 'var(--accent)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            <BarChart3 size={18} color="white" />
+            <BarChart3 size={18} color="white" strokeWidth={2} />
           </div>
-          <span>
-            Job<span className="gradient-text">Pulse</span>
+          <span style={{ color: 'var(--foreground)' }}>
+            Job<span style={{ color: 'var(--accent)' }}>Pulse</span>
           </span>
         </Link>
 
@@ -98,7 +98,7 @@ export function Navbar() {
                   transition: 'all 0.2s',
                 }}
               >
-                <Icon size={16} />
+                <Icon size={16} strokeWidth={1.5} />
                 {item.label}
               </Link>
             );
@@ -117,7 +117,7 @@ export function Navbar() {
             padding: 8,
           }}
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
         </button>
       </nav>
 
@@ -153,7 +153,7 @@ export function Navbar() {
                   background: isActive ? 'var(--accent-glow)' : 'transparent',
                 }}
               >
-                <Icon size={18} />
+                <Icon size={18} strokeWidth={1.5} />
                 {item.label}
               </Link>
             );

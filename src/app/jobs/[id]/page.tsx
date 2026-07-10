@@ -72,7 +72,7 @@ export default function JobDetailPage() {
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '64px 24px', textAlign: 'center' }}>
         <h2 style={{ fontSize: 20, fontWeight: 600, marginBottom: 8 }}>Job not found</h2>
         <Link href="/" className="btn-secondary" style={{ marginTop: 16, display: 'inline-flex' }}>
-          <ArrowLeft size={16} /> Back to Jobs
+          <ArrowLeft size={16} strokeWidth={1.5} /> Back to Jobs
         </Link>
       </div>
     );
@@ -84,7 +84,7 @@ export default function JobDetailPage() {
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 24px 64px' }}>
       {/* Back Button */}
       <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--foreground-muted)', marginBottom: 24, transition: 'color 0.2s' }}>
-        <ArrowLeft size={14} /> Back to Jobs
+        <ArrowLeft size={14} strokeWidth={1.5} /> Back to Jobs
       </Link>
 
       {/* Job Header */}
@@ -93,7 +93,7 @@ export default function JobDetailPage() {
           <div style={{ flex: 1 }}>
             <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8, lineHeight: 1.3 }}>{job.title}</h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
-              <Building2 size={16} style={{ color: 'var(--accent)' }} />
+              <Building2 size={16} strokeWidth={1.5} style={{ color: 'var(--accent)' }} />
               <span style={{ fontSize: 16, fontWeight: 600, color: 'var(--foreground-secondary)' }}>{job.company.name}</span>
             </div>
 
@@ -101,19 +101,19 @@ export default function JobDetailPage() {
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', fontSize: 13, color: 'var(--foreground-secondary)' }}>
               {job.city && (
                 <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <MapPin size={13} /> {job.city}{job.country ? `, ${job.country}` : ''}
+                  <MapPin size={13} strokeWidth={1.5} /> {job.city}{job.country ? `, ${job.country}` : ''}
                 </span>
               )}
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                {job.remote === 'REMOTE' ? <Wifi size={13} /> : job.remote === 'HYBRID' ? <Globe size={13} /> : <MapPin size={13} />}
+                {job.remote === 'REMOTE' ? <Wifi size={13} strokeWidth={1.5} /> : job.remote === 'HYBRID' ? <Globe size={13} strokeWidth={1.5} /> : <MapPin size={13} strokeWidth={1.5} />}
                 {job.remote.charAt(0) + job.remote.slice(1).toLowerCase()}
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Briefcase size={13} /> {job.jobType.replace('_', ' ')}
+                <Briefcase size={13} strokeWidth={1.5} /> {job.jobType.replace('_', ' ')}
               </span>
               {job.postedAt && (
                 <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <Clock size={13} /> {timeAgo(job.postedAt)}
+                  <Clock size={13} strokeWidth={1.5} /> {timeAgo(job.postedAt)}
                 </span>
               )}
             </div>
@@ -135,7 +135,7 @@ export default function JobDetailPage() {
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
           {job.visaSponsorship && (
             <span style={{ fontSize: 12, padding: '4px 12px', borderRadius: 'var(--radius-full)', background: 'rgba(34, 197, 94, 0.1)', color: 'var(--success)', border: '1px solid rgba(34, 197, 94, 0.2)', display: 'flex', alignItems: 'center', gap: 4 }}>
-              <Shield size={12} /> Visa Sponsorship
+              <Shield size={12} strokeWidth={1.5} /> Visa Sponsorship
             </span>
           )}
           <span style={{ fontSize: 12, padding: '4px 12px', borderRadius: 'var(--radius-full)', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--info)', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
@@ -163,7 +163,7 @@ export default function JobDetailPage() {
           className="btn-primary"
           style={{ marginTop: 20, width: '100%', justifyContent: 'center', padding: '14px 24px', fontSize: 15 }}
         >
-          Apply Now <ExternalLink size={15} />
+          Apply Now <ExternalLink size={15} strokeWidth={1.5} />
         </a>
       </div>
 
@@ -181,7 +181,7 @@ export default function JobDetailPage() {
       {job.relatedJobs && job.relatedJobs.length > 0 && (
         <div>
           <h2 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <Sparkles size={16} style={{ color: 'var(--accent)' }} /> Similar Roles
+            <Sparkles size={16} strokeWidth={1.5} style={{ color: 'var(--accent)' }} /> Similar Roles
           </h2>
           <div style={{ display: 'grid', gap: 12, gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
             {job.relatedJobs.map((related) => (

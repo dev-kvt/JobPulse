@@ -35,8 +35,9 @@ export default function DashboardPage() {
       const res = await fetch('/api/cron/crawl');
       const data = await res.json();
       if (data.success) {
-        setCrawlResult(`✅ Crawl complete: ${data.data.summary.totalJobsFound} found, ${data.data.summary.totalNewJobs} new`);
-        // Refresh stats
+        setCrawlResult(`✅ Crawl initiated: running in the background. Stats will refresh shortly.`);
+        // Give the background job a moment to complete before refreshing stats
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         const statsRes = await fetch('/api/stats');
         const statsData = await statsRes.json();
         if (statsData.success) setStats(statsData.data);
@@ -66,7 +67,7 @@ export default function DashboardPage() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32, flexWrap: 'wrap', gap: 16 }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, marginBottom: 8 }}>
-            <LayoutDashboard size={28} style={{ verticalAlign: 'middle', marginRight: 8, color: 'var(--accent)' }} />
+            <LayoutDashboard size={28} strokeWidth={1.5} style={{ verticalAlign: 'middle', marginRight: 8, color: 'var(--accent)' }} />
             Dashboard
           </h1>
           <p style={{ color: 'var(--foreground-secondary)', fontSize: 15 }}>System overview and crawler management</p>
@@ -77,7 +78,7 @@ export default function DashboardPage() {
           disabled={crawling}
           style={{ opacity: crawling ? 0.7 : 1 }}
         >
-          <Activity size={16} />
+          <Activity size={16} strokeWidth={1.5} />
           {crawling ? 'Crawling...' : 'Run Crawlers'}
         </button>
       </div>
@@ -99,7 +100,7 @@ export default function DashboardPage() {
               { label: 'Sources', value: 9, icon: Activity, color: 'var(--warning)' },
             ].map(({ label, value, icon: Icon, color }) => (
               <div key={label} className="glass-card" style={{ padding: 20, textAlign: 'center' }}>
-                <Icon size={24} style={{ color, marginBottom: 8 }} />
+                <Icon size={24} strokeWidth={1.5} style={{ color, marginBottom: 8 }} />
                 <div style={{ fontSize: 32, fontWeight: 800, marginBottom: 4 }}>{value.toLocaleString()}</div>
                 <div style={{ fontSize: 12, color: 'var(--foreground-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{label}</div>
               </div>
@@ -142,7 +143,7 @@ export default function DashboardPage() {
           {/* Recent Crawls */}
           <div className="glass-card" style={{ padding: 20 }}>
             <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <Clock size={16} style={{ color: 'var(--foreground-muted)' }} /> Recent Crawls
+              <Clock size={16} strokeWidth={1.5} style={{ color: 'var(--foreground-muted)' }} /> Recent Crawls
             </h3>
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -159,7 +160,7 @@ export default function DashboardPage() {
                       <td style={{ padding: '10px 12px', fontWeight: 500 }}>{crawl.source}</td>
                       <td style={{ padding: '10px 12px' }}>
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                          {crawl.status === 'COMPLETED' ? <CheckCircle size={12} color="var(--success)" /> : crawl.status === 'RUNNING' ? <Activity size={12} color="var(--warning)" /> : <XCircle size={12} color="var(--danger)" />}
+                          {crawl.status === 'COMPLETED' ? <CheckCircle size={12} strokeWidth={1.5} color="var(--success)" /> : crawl.status === 'RUNNING' ? <Activity size={12} strokeWidth={1.5} color="var(--warning)" /> : <XCircle size={12} strokeWidth={1.5} color="var(--danger)" />}
                           {crawl.status}
                         </span>
                       </td>
